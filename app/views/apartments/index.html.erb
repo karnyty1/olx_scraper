@@ -1,0 +1,78 @@
+<%# app/views/apartments/index.html.erb %>
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OLX Нерухомість</title>
+</head>
+<body>
+
+  <h1>OLX — Нерухомість</h1>
+
+  <%# Форма пошуку %>
+  <%= form_with url: apartments_path, method: :get, local: true do |f| %>
+    <div class="form-row">
+      <label>Сторінок:
+        <%= f.select :pages, options_for_select([[1,1],[2,2],[3,3],[5,5],[10,10]], @pages) %>
+      </label>
+
+      <label>Сортування:
+        <%= f.select :sort, options_for_select([
+          ["Ціна: зростання", "price_asc"],
+          ["Ціна: спадання",  "price_desc"],
+          ["Назва",            "title"]
+        ], @sort) %>
+      </label>
+
+      <%= f.hidden_field :search, value: "1" %>
+      <%= f.submit "Знайти" %>
+    </div>
+  <% end %>
+
+  <%# Статистика %>
+  <% if params[:search].present? && @apartments.any? %>
+    <p class="stats">
+      Знайдено: <strong><%= @total %></strong> оголошень &nbsp;|&nbsp;
+      Мін: <strong><%= @apartments.first[:price].to_i %> грн</strong> &nbsp;|&nbsp;
+      Макс: <strong><%= @apartments.last[:price].to_i %> грн</strong>
+    </p>
+  <% end %>
+
+  <%# Картки %>
+  <% if @apartments.any? %>
+    <div class="grid">
+      <% @apartments.each do |apt| %>
+        <div class="card">
+
+          <%# Фото %>
+          <% if apt[:image].present? && apt[:image].start_with?('http') %>
+            <img src="<%= apt[:image] %>" alt="<%= apt[:title] %>"
+                 onerror="this.src=''; this.alt='Немає фото'">
+          <% else %>
+            <div class="no-photo">🏠 Немає фото</div>
+          <% end %>
+
+          <%# Тіло картки %>
+          <div class="card-body">
+            <p class="card-title"><%= apt[:title] %></p>
+            <p class="card-location">📍 <%= apt[:location] %></p>
+            <div class="card-footer">
+              <span class="card-price"><%= number_with_delimiter(apt[:price].to_i) %> грн</span>
+              <a href="<%= apt[:link] %>" target="_blank">Відкрити →</a>
+            </div>
+          </div>
+
+        </div>
+      <% end %>
+    </div>
+
+  <% elsif params[:search].present? %>
+    <p>Нічого не знайдено. Спробуйте збільшити кількість сторінок.</p>
+
+  <% else %>
+    <p>Оберіть параметри та натисніть «Знайти».</p>
+  <% end %>
+
+</body>
+</html>
