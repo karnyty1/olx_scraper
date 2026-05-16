@@ -1,28 +1,29 @@
-<<<<<<< HEAD
-# README
+# OLX Scraper 🏠
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Застосунок на Ruby on Rails, який парсить оголошення про нерухомість з OLX.ua і показує їх у вигляді карток.
 
-Things you may want to cover:
+## Технології
 
-* Ruby version
+- Ruby on Rails 8.1
+- HTTParty + Nokogiri — парсинг
+- SQLite3
+- Docker / Kamal
 
-* System dependencies
+## Запуск
 
-* Configuration
+```bash
+git clone https://github.com/karnyty1/olx_scraper.git
+cd olx_scraper
+bundle install
+bin/rails db:setup
+bin/dev
+```
 
-* Database creation
+Відкрийте [http://localhost:3000](http://localhost:3000)
 
-* Database initialization
+## Як користуватись
 
-* How to run the test suite
+1. Оберіть кількість сторінок (1–10)
+2. Оберіть сортування (ціна ↑ / ↓ / назва)
+3. Натисніть «Знайти»
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-=======
-# olx_scraper
->>>>>>> 5fbfa01bb8eed3ea303fa4b42acf9a313826b1c1
